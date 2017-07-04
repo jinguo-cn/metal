@@ -70,6 +70,7 @@ import io.parsingdata.metal.token.Def;
 import io.parsingdata.metal.token.Nod;
 import io.parsingdata.metal.token.Post;
 import io.parsingdata.metal.token.Pre;
+import io.parsingdata.metal.token.Range;
 import io.parsingdata.metal.token.Rep;
 import io.parsingdata.metal.token.RepN;
 import io.parsingdata.metal.token.Seq;
@@ -136,6 +137,8 @@ public final class Shorthand {
     public static Token tie(final String name, final Token token, final ValueExpression dataExpression) { return tie(name, token, dataExpression, null); }
     public static Token tie(final Token token, final ValueExpression dataExpression, final Encoding encoding) { return tie(NO_NAME, token, dataExpression, encoding); }
     public static Token tie(final Token token, final ValueExpression dataExpression) { return tie(token, dataExpression, null); }
+    public static Token range(final String name, final Token token, final ValueExpression max, final Encoding encoding) { return new Range(name, token, max, encoding); }
+    public static Token range(final String name, final Token token, final ValueExpression max) { return range(name, token, max, null); }
 
     public static BinaryValueExpression add(final ValueExpression left, final ValueExpression right) { return new Add(left, right); }
     public static BinaryValueExpression div(final ValueExpression left, final ValueExpression right) { return new Div(left, right); }
