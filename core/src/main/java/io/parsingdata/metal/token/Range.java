@@ -16,6 +16,7 @@
 
 package io.parsingdata.metal.token;
 
+import static io.parsingdata.metal.Shorthand.add;
 import static io.parsingdata.metal.Shorthand.con;
 import static io.parsingdata.metal.Trampoline.complete;
 import static io.parsingdata.metal.Trampoline.intermediate;
@@ -29,6 +30,7 @@ import java.util.Optional;
 
 import io.parsingdata.metal.Trampoline;
 import io.parsingdata.metal.Util;
+import io.parsingdata.metal.data.DataExpressionSource;
 import io.parsingdata.metal.data.Environment;
 import io.parsingdata.metal.data.ImmutableList;
 import io.parsingdata.metal.data.ParseValue;
@@ -65,10 +67,10 @@ public class Range extends Token {
         if (currentValue.asNumeric().intValue() > max) {
             return complete(Util::failure);
         }
-        final Environment newEnvironment = environment.add(new ParseValue(name, this, currentValue.slice, currentValue.encoding));
+        final Environment newEnvironment = environment.add(new ParseValue(name, this, new DataExpressionSource(current, 0, environment.order, encoding).slice(0, currentValue.slice.size), currentValue.encoding));
         return token.parse(scope, newEnvironment, encoding)
             .map(nextEnvironment -> complete(() -> success(nextEnvironment.closeBranch())))
-            .orElseGet(() -> intermediate(() -> iterate(scope, environment, encoding, max, con(currentValue.asNumeric().intValue() + 1))));
+            .orElseGet(() -> intermediate(() -> iterate(scope, environment, encoding, max, add(current, con(1)))));
     }
 
     @Override
